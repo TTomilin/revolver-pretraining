@@ -1,11 +1,10 @@
-
-import gym
-import os
-import numpy as np
-import copy
 import io
+import os
 import xml.dom.minidom
 import xml.etree.ElementTree as ET
+
+import gym
+import numpy as np
 
 import mjcf_utils
 
@@ -18,7 +17,6 @@ def generalized_humanoid_original(interp_param=0., tmp_file_dir=None):
 
 
 def generalized_humanoid_leg_length_mass(interp_param=0., tmp_file_dir='/tmp/', **kwargs):
-
     original_ant_filename = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'envs/mujoco/assets/humanoid.xml')
     tree = ET.parse(original_ant_filename)
 
@@ -31,16 +29,16 @@ def generalized_humanoid_leg_length_mass(interp_param=0., tmp_file_dir='/tmp/', 
     shin_size_change = -size_change
 
     thigh_rgba = ' '.join([str(i) for i in \
-            np.array([0.8, 0.6, 0.4, 1]) * (1 - interp_param) + \
-            np.array([0.2, 0.2, 0.2, 1]) * interp_param])
+                           np.array([0.8, 0.6, 0.4, 1]) * (1 - interp_param) + \
+                           np.array([0.2, 0.2, 0.2, 1]) * interp_param])
     shin_rgba = ' '.join([str(i) for i in \
-            np.array([0.8, 0.6, 0.4, 1]) * (1 - interp_param) + \
-            np.array([1, 1, 1., 1]) * interp_param])
+                          np.array([0.8, 0.6, 0.4, 1]) * (1 - interp_param) + \
+                          np.array([1, 1, 1., 1]) * interp_param])
 
     ##### thigh
     for side in ['left', 'right']:
         thigh_geom = mjcf_utils.find_elements(tree.getroot(), \
-                tags='geom', attribs={'name': '{}_thigh1'.format(side)})
+                                              tags='geom', attribs={'name': '{}_thigh1'.format(side)})
         thigh_fromto = thigh_geom.attrib['fromto'].split()
         thigh_length = float(thigh_fromto[-1]) + (-thigh_length_change[side])
         thigh_geom.attrib['fromto'] = ' '.join(thigh_fromto[:-1] + [str(thigh_length)])
@@ -48,14 +46,14 @@ def generalized_humanoid_leg_length_mass(interp_param=0., tmp_file_dir='/tmp/', 
         thigh_geom.attrib['rgba'] = thigh_rgba
 
         shin_body = mjcf_utils.find_elements(tree.getroot(), \
-                tags='body', attribs={'name': '{}_shin'.format(side)})
+                                             tags='body', attribs={'name': '{}_shin'.format(side)})
         shin_pos = shin_body.attrib['pos'].split()
         shin_pos_z = float(shin_pos[-1]) + (-thigh_length_change[side])
         shin_body.attrib['pos'] = ' '.join(shin_pos[:-1] + [str(shin_pos_z)])
 
     for side in ['left', 'right']:
         shin_geom = mjcf_utils.find_elements(tree.getroot(), \
-                tags='geom', attribs={'name': '{}_shin1'.format(side)})
+                                             tags='geom', attribs={'name': '{}_shin1'.format(side)})
         shin_fromto = shin_geom.attrib['fromto'].split()
         shin_length = float(shin_fromto[-1]) + (-shin_length_change[side])
         shin_geom.attrib['fromto'] = ' '.join(shin_fromto[:-1] + [str(shin_length)])
@@ -63,7 +61,7 @@ def generalized_humanoid_leg_length_mass(interp_param=0., tmp_file_dir='/tmp/', 
         shin_geom.attrib['rgba'] = shin_rgba
 
         foot_body = mjcf_utils.find_elements(tree.getroot(), \
-                tags='body', attribs={'name': '{}_foot'.format(side)})
+                                             tags='body', attribs={'name': '{}_foot'.format(side)})
         foot_pos = foot_body.attrib['pos'].split()
         foot_pos_z = float(foot_pos[-1]) + (-shin_length_change[side])
         foot_body.attrib['pos'] = ' '.join(foot_pos[:-1] + [str(foot_pos_z)])
@@ -81,7 +79,6 @@ def generalized_humanoid_leg_length_mass(interp_param=0., tmp_file_dir='/tmp/', 
 
 
 if __name__ == '__main__':
-    import envs.mujoco
 
     interp_param = 1.0
 
@@ -92,4 +89,3 @@ if __name__ == '__main__':
         env.step(np.zeros([17]))
         if viz:
             env.render()
-

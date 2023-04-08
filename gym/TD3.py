@@ -4,6 +4,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.tensorboard import SummaryWriter
 
 
 # Implementation of Twin Delayed Deep Deterministic Policy Gradients (TD3)
@@ -67,6 +68,7 @@ class TD3(object):
             state_dim,
             action_dim,
             max_action,
+            writer: SummaryWriter,
             batch_size=256,
             discount=0.99,
             tau=0.005,
@@ -78,6 +80,7 @@ class TD3(object):
             device=torch.device('cuda'),
     ):
 
+        self.writer = writer
         self.device = device
         self.actor_lr = actor_lr
         self.critic_lr = critic_lr
@@ -134,6 +137,7 @@ class TD3(object):
 
         # Compute critic loss
         critic_loss = F.mse_loss(current_Q1, target_Q) + F.mse_loss(current_Q2, target_Q)
+        self.writer.add_scalar('train/critic_loss', critic_loss, self.total_it)
 
         # Optimize the critic
         self.critic_optimizer.zero_grad()
@@ -145,6 +149,7 @@ class TD3(object):
 
             # Compute actor losse
             actor_loss = -self.critic.Q1(state, self.actor(state)).mean()
+            self.writer.add_scalar('train/actor_loss', actor_loss, self.total_it)
 
             # Optimize the actor
             self.actor_optimizer.zero_grad()

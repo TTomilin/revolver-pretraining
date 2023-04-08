@@ -1,8 +1,9 @@
 # utility functions for manipulating MJCF XML models
 
 import xml.etree.ElementTree as ET
-import numpy as np
 from copy import deepcopy
+
+import numpy as np
 
 
 def array_to_string(array):
@@ -212,4 +213,3 @@ def find_elements(root, tags, attribs=None, return_first=True):
                 elements += found_elements if type(found_elements) is list else [found_elements]
 
     return elements if elements else None
-
