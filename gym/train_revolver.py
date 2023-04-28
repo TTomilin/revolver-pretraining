@@ -122,7 +122,7 @@ if __name__ == "__main__":
 
     file_name = args.log_dir
     file_name += "_{}".format(args.comment) if args.comment != "" else ""
-    timestamp = datetime.datetime.now().strftime('%b%d_%H-%M-%S')
+    timestamp = datetime.datetime.now().strftime('%b%d_%H-%M-%S-%f')[:-3]
 
     init_wandb(args, timestamp)
 
