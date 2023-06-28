@@ -272,7 +272,7 @@ if __name__ == "__main__":
             np.save("{}/evaluations".format(result_folder), evaluations)
 
         if (t + 1) % args.save_freq == 0:
-            policy.save("./{}/models/iter_{}_model".format(result_folder, t + 1))
+            policy.save("{}/models/iter_{}_model".format(result_folder, t + 1))
 
         # if (t + 1) % args.eval_freq == 0:
         #     if args.save_model:

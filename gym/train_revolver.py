@@ -326,4 +326,4 @@ if __name__ == "__main__":
 
                 # policy.save("./{}/models/iter_{}_model".format(result_folder, t + 1))
 
-        policy.save("./{}/models/interp_{}_model".format(result_folder, interp_param))
+        policy.save("{}/models/interp_{}_model".format(result_folder, interp_param))
