@@ -1,6 +1,7 @@
 import argparse
 import datetime
 import os
+from pathlib import Path
 
 import cv2
 import numpy as np
@@ -126,7 +127,9 @@ if __name__ == "__main__":
 
     init_wandb(args, timestamp)
 
-    result_folder = os.path.join(args.log_dir, timestamp)
+    base_dir = Path(__file__).parent.parent.resolve()
+
+    result_folder = os.path.join(base_dir, args.log_dir, timestamp)
 
     if not os.path.exists('{}/models/'.format(result_folder)):
         os.system('mkdir -p {}/models/'.format(result_folder))
