@@ -76,8 +76,8 @@ if __name__ == "__main__":
     arg('--n_repeat', default=20, type=int)
     arg('--use_expl_noise', action="store_true")
 
-    arg("--debug", action="store_true")
-    arg('--eval', default=0, type=int)
+    arg("--debug", action="store_true", default=False)
+    arg('--eval', action="store_true", default=False)
     arg('--eval_interp_param', default=-1., type=float)
     arg('--interp_start', default=0., type=float)
     arg('--interp_end', default=1., type=float)
