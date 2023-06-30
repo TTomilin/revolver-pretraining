@@ -265,7 +265,6 @@ if __name__ == "__main__":
             # Perform action
             next_state, reward, done, _ = env.step(action)
 
-            writer.add_scalar('unknown/reward', reward, t + 1)
             done_bool = float(done) if episode_timesteps < env._max_episode_steps else 0
 
             # Store data in replay buffer
