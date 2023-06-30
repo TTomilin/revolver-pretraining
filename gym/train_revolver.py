@@ -193,7 +193,7 @@ if __name__ == "__main__":
 
     if args.load_model != "":
         policy_file = 'model' if args.load_model == "default" else args.load_model
-        policy.load(policy_file, load_optim=False)
+        policy.load(f'{base_dir}/{policy_file}', load_optim=False)
         log_string('model loaded')
 
     # Evaluate well-trained policy
