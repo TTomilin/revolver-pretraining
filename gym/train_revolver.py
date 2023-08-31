@@ -6,6 +6,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 import torch
+import wandb
 from torch.utils.tensorboard import SummaryWriter
 
 import make_generalized_envs
@@ -190,6 +191,9 @@ if __name__ == "__main__":
     elif 'SAC' in args.policy:
         SAC = __import__(args.policy)
         policy = SAC.SAC(**kwargs)
+
+    wandb.watch(policy.actor, log='all')
+    wandb.watch(policy.critic, log='all')
 
     if args.load_model != "":
         policy_file = 'model' if args.load_model == "default" else args.load_model
